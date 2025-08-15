@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+.HeroBackgroundColor{
+    background-color: #fdf5e8;
+}
+
+.text-indet{
+    text-indent: 50px;
+}
+
+.box-shadow{
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+}
