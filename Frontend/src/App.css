@@ -11,3 +11,9 @@
 .box-shadow{
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
 }
+
+.example-table{
+    td{
+        border: 1px solid black;
+    }
+}
