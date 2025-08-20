@@ -17,3 +17,10 @@
         border: 1px solid black;
     }
 }
+
+.login-container{
+    background-image: url('assets/LoginBackground.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
