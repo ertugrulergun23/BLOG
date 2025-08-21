@@ -27,10 +27,19 @@ function Login() {
 
 
   return (
-    <div className='w-full h-screen flex items-center justify-center login-container'>
+    <div className='w-full h-screen flex items-center justify-center bg-green-500'>
         <div className='w-8/12 h-10/12 relative bg-white'>
-            <div className={`h-full w-1/2 absolute z-20 transition-all duration-200 ease-in-out bg-yellow-400 ${login ? 'right-1/2' : 'right-0'}`}>
-                <button onClick={changeLogin}>değiştir</button>
+            <div className={`h-full w-1/2 flex flex-col items-center justify-center absolute z-20 transition-all duration-200 ease-in-out bg-green-500 ${login ? 'right-1/2' : 'right-0'}`}>
+                <h1 className='text-white text-3xl text-center'>
+                        {login ? 'HESABIN VAR MI ?' : 'HESABIN YOK MU ?'}
+                    <br/>
+                        {login ? 'HEMEN GİRİŞ YAP' : 'HEMEN KAYDOL'}
+                </h1>
+                <button className='text-white text-3xl text-center rounded-2xl p-5 cursor-pointer box-shadow bg-blue-500 mt-10' onClick={changeLogin}>
+                    {
+                        login ? 'GİRİŞ YAP' : 'KAYDOL'
+                    }
+                </button>
             </div>
             <div className='h-full w-full absolute flex z-10'>
                 <div className="w-1/2 flex items-center justify-center">
