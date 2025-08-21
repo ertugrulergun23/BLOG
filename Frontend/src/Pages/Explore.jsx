@@ -6,9 +6,9 @@ function Explore() {
 
   const ExploreBlogTemplate = () => {
     return (
-      <div className='flex justify-between w-1/2 h-50 m-10 border border-black cursor-pointer'>
-        <div className='w-3/12 m-1 border border-black'>resim</div>
-        <div className='w-9/12 m-1 flex flex-col items-center border border-black'>
+      <div className='flex justify-between min-w-10/12 h-50 m-5 rounded-[5px] box-shadow cursor-pointer'>
+        <div className='w-3/12 m-1'>resim</div>
+        <div className='w-9/12 m-1 flex flex-col items-center'>
           <div className='w-full h-3/12 flex justify-between items-center px-2'>
             <h1 className='text-3xl'>başlık</h1>
             <div><Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly /></div>
@@ -29,8 +29,21 @@ function Explore() {
 
   return (
     <div className='pt-13'>
-      <div className='w-full'>
-        <ExploreBlogTemplate/>
+      <div className='w-full min-h-screen flex flex-col'>
+        <h1 className='text-5xl text-gray-500'>En son eklenenler</h1>
+        <div className='w-full flex overflow-hidden'>
+          <ExploreBlogTemplate/>
+          <ExploreBlogTemplate/>
+          <ExploreBlogTemplate/>
+        </div>
+        <h1 className='text-5xl text-gray-500'>En yüksek puanı alanlar</h1>
+        <div>
+          bileşenler
+        </div>
+        <h1 className='text-5xl text-gray-500'>En çok yorum alanlar</h1>
+        <div>
+          bileşenler
+        </div>
       </div>
         
     </div>
