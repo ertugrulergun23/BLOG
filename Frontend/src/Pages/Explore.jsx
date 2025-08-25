@@ -1,20 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Rating } from '@mui/material'
-import { ChevronsDown } from 'lucide-react';
+import { ChevronsDown, Search } from 'lucide-react';
+import {CircularProgress} from '@mui/material';
+
+        
 
 function Explore() {
+  const [datas , setDatas] = useState()
+  const [isLoading , setIsLoading] = useState(false)
+  /*
+    Sayfaya backend bağlanacak ve arama çubuğu aktif hale getirilecek .
+  */
 
-  const ExploreBlogTemplate = () => {
+
+  // Önerilen veya aranan blogları gösterecek bileşen
+  const ExploreBlogTemplate = ({data}) => {
     return (
-      <div className='flex justify-between min-w-10/12 h-50 m-5 rounded-[5px] box-shadow cursor-pointer'>
-        <div className='w-3/12 m-1'>resim</div>
+      <div className='flex justify-between w-5/12 h-50 m-5 rounded-[5px] box-shadow cursor-pointer'>
+        <div className='w-3/12 m-1'><img src={data.image} className='h-full'/></div>
         <div className='w-9/12 m-1 flex flex-col items-center'>
           <div className='w-full h-3/12 flex justify-between items-center px-2'>
-            <h1 className='text-3xl'>başlık</h1>
-            <div><Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly /></div>
+            <h1 className='text-3xl'>{data.tittle}</h1>
+            <div><Rating name="half-rating-read" defaultValue={data.point} precision={0.5} readOnly /></div>
           </div>
           <p className='h-7/12 overflow-hidden text-xl px-2'>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim nemo tenetur dolor cupiditate voluptatum sequi, voluptas eum voluptatem totam, assumenda porro a, eos eligendi odit dolorem facilis alias officiis in nihil tempora! Est nostrum voluptatum perspiciatis enim, deserunt dicta! Dolor, dolorum. Delectus itaque quibusdam sint eos nam voluptas non mollitia deserunt alias, laboriosam nostrum quam aperiam, quasi perspiciatis odit aut quia laborum vero omnis ipsa repudiandae? Eius molestiae necessitatibus laudantium explicabo atque unde hic culpa nemo laboriosam reiciendis blanditiis ex dolor illo quisquam beatae vitae quaerat optio aliquid ducimus, excepturi incidunt doloremque magnam veniam quis. Voluptates rerum nemo quis sed!
+            {data.content}
           </p>
           <button className='h-1/12 text-gray-500 flex items-center text-lg p-3 cursor-pointer'>
             <span>devamını oku</span> <ChevronsDown size={20}/>
@@ -24,28 +34,75 @@ function Explore() {
     )
   }
 
+  // Arama kutucuğu bileşeni
+  const SearchBarTemplate = () => {
+    return (
+      <div className='w-8/12 flex items-center bg-white rounded-xl border border-black'>
+        <div className=''>
+          <Search size={35}/>
+        </div>
+          <input type='text' className='h-full w-full focus:outline-0 p-1 text-xl' placeholder='Aramak için bir şey yazın'/>
+      </div>
+    )
+  }
+
+  useEffect(()=>{
+    fetch('http://127.0.0.1:8000/api/blogs')
+    .then(response => response.json())
+    .then(data =>{
+      setDatas(data)
+      setIsLoading(true)
+    })
+    .catch(error => alert(error))
+  },[])
+
 
 
 
   return (
     <div className='pt-13'>
       <div className='w-full min-h-screen flex flex-col'>
-        <h1 className='text-5xl text-gray-500'>En son eklenenler</h1>
-        <div className='w-full flex overflow-hidden'>
-          <ExploreBlogTemplate/>
-          <ExploreBlogTemplate/>
-          <ExploreBlogTemplate/>
+        <div className='w-full h-16 flex items-center justify-center'>
+          <SearchBarTemplate/>
         </div>
-        <h1 className='text-5xl text-gray-500'>En yüksek puanı alanlar</h1>
-        <div>
-          bileşenler
+        {/* Önerilen bloglar kısmının başlangıcı */}
+        {
+          isLoading ? 
+                  <div>
+        <h1 className='text-5xl text-gray-500 ms-5'>En son eklenenler</h1>
+        <div className='w-full flex flex-wrap justify-center'>
+          <ExploreBlogTemplate data={datas[0]}/>
+          <ExploreBlogTemplate data={datas[1]}/>
+          <ExploreBlogTemplate data={datas[0]}/>
+          <ExploreBlogTemplate data={datas[1]}/>
         </div>
-        <h1 className='text-5xl text-gray-500'>En çok yorum alanlar</h1>
-        <div>
-          bileşenler
+        <h1 className='text-5xl text-gray-500 ms-5'>En yüksek puanı alanlar</h1>
+        <div className='w-full flex flex-wrap justify-center'>
+          <ExploreBlogTemplate data={datas[0]}/>
+          <ExploreBlogTemplate data={datas[1]}/>
+          <ExploreBlogTemplate data={datas[0]}/>
+          <ExploreBlogTemplate data={datas[1]}/>
         </div>
+        <h1 className='text-5xl text-gray-500 ms-5'>En çok yorum alanlar</h1>
+        <div className='w-full flex flex-wrap justify-center'>
+          <ExploreBlogTemplate data={datas[0]}/>
+          <ExploreBlogTemplate data={datas[1]}/>
+          <ExploreBlogTemplate data={datas[0]}/>
+          <ExploreBlogTemplate data={datas[1]}/>
+        </div>
+        </div>
+        :
+        <div className='w-full h-12 flex items-center justify-center'>
+          <CircularProgress
+            color="success"
+            determinate={false}
+            size="lg"
+            variant="soft"
+          />
+        </div>
+        }
+        {/* Önerilen bloglar kısmının bitişi */}
       </div>
-        
     </div>
   )
 }

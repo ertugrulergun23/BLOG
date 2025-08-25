@@ -1,22 +1,24 @@
 import React, { useState } from 'react'
 import logo from '../assets/react.svg'
 import { Search , X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 
 function Header() {
   const [filter,setFilter] = useState("");// Arama çubuğu ile yapılacak filtreleme için state
+  const navigate = useNavigate()
 
   // Header kısmındaki link bileşenleri
   const Link = ({text,url})=>{
     return (
       <div className='group overflow-hidden'>
-        <div className='border border-black translate-x-72 group-hover:translate-x-0 transition-all duration-500 ease-in-out'></div>
+        <div className='border border-white translate-x-72 group-hover:translate-x-0 transition-all duration-500 ease-in-out'></div>
         <div className='flex'>
-          <div className='border border-black -translate-y-72 group-hover:translate-y-0 transition-all duration-500 ease-in-out'></div>
-          <div className='m-1 cursor-pointer text-xl group-hover:text-2xl transition-all duration-400 select-none'>{text}</div>
-          <div className='border border-black translate-y-72 group-hover:translate-y-0 transition-all duration-500 ease-in-out'></div>
+          <div className='border border-white -translate-y-72 group-hover:translate-y-0 transition-all duration-500 ease-in-out'></div>
+          <div className='m-1 cursor-pointer text-xl group-hover:text-2xl transition-all duration-400 select-none text-white' onClick={()=>{navigate(url)}}>{text}</div>
+          <div className='border border-white translate-y-72 group-hover:translate-y-0 transition-all duration-500 ease-in-out'></div>
         </div>
-        <div className='border border-black -translate-x-72 group-hover:translate-x-0 transition-all duration-500 ease-in-out'></div>
+        <div className='border border-white -translate-x-72 group-hover:translate-x-0 transition-all duration-500 ease-in-out'></div>
       </div>
     )
   }
@@ -24,12 +26,15 @@ function Header() {
 
 
   return (
-    <div className='z-20 fixed w-full h-13 bg-green-600 flex items-center justify-between px-10'>
+    <div className='z-90 fixed w-full h-13 bg-green-600 flex items-center justify-between px-10'>
         <div>
           <img src={logo} alt='logo'/>
         </div>
-        <div>
-          <Link text={"yazı"} />
+        <div className='flex justify-between w-9/12' >
+          <Link text={"Anasayfa"} url={"/"}/>
+          <Link text={"Keşfet"} url={"/explore"}/>
+          <Link text={"Hakkında"} url={"/about"}/>
+          <Link text={"Giriş Yap/Kaydol"} url={"/signup"}/>
         </div>
         <div className='relative'>
           <Search className='absolute h-full text-gray-500'/> 
