@@ -6,6 +6,7 @@ import BlogDetail from './Pages/BlogDetail'
 import Profile from './Pages/Profile'
 import Explore from './Pages/Explore'
 import Login from './Pages/Login'
+import AddBlog from './Pages/AddBlog'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
           <Route path='/deneme' element={<BlogDetail/>} />
           <Route path='/profile' element={<Profile/>} />
           <Route path='/explore' element={<Explore/>}/>
+          <Route path='/addblog' element={<AddBlog/>}/>
         </Route>
         <Route path='/signup' element={<Login/>}/>
       </Routes>
