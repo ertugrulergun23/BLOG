@@ -6,7 +6,7 @@ import {CircularProgress} from '@mui/material';
         
 
 function Explore() {
-  const [datas , setDatas] = useState()
+  const [datas , setDatas] = useState([])
   const [isLoading , setIsLoading] = useState(false)
   /*
     Sayfaya backend bağlanacak ve arama çubuğu aktif hale getirilecek .
@@ -50,8 +50,10 @@ function Explore() {
     fetch('http://127.0.0.1:8000/api/blogs')
     .then(response => response.json())
     .then(data =>{
-      setDatas(data)
-      setIsLoading(true)
+      if(data.length!=0){
+        setDatas(data)
+        setIsLoading(true)
+      }
     })
     .catch(error => alert(error))
   },[])
