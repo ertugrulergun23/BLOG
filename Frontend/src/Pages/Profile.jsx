@@ -1,9 +1,42 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import ProfilePhoto from '../assets/react.svg'
 import Rating from '@mui/material/Rating';
+import {UserContext} from '../Context/UserContext'
+
+/*
+  - Kullanıcı adı , ad , soyad , biyografi , avatar , doğum tarihi API ile profillden alınacak
+  - Yazılan bloglara erişilebilecek 
+  - AddBlog sayfasına yönlendirme eklenecek 
+
+*/
 
 function Profile() {
 
+  // Context API'dan profil çekme işlemi
+  const {profile} = useContext(UserContext)
+
+  useEffect(()=>{
+    console.log(profile)
+  },[])
+
+  // Profil bilgilerinin gösterileceği component
+  const ProfileTemplate = () => {
+    return (
+      <div className='w-full flex p-4'>
+        <div className='w-3/12 p-4'>
+          <img src={ProfilePhoto} alt='profil resmi' className='w-full'/>
+        </div>
+        <div className='w-9/12 flex flex-wrap'>
+          <p className='w-full text-2xl'>Kullanıcı Adı : </p>
+          <p className='w-1/2 text-2xl'>Ad : </p>
+          <p className='w-1/2 text-2xl'>Soyad : </p>
+          <p className='w-1/2 text-2xl'>Doğum Tarihi : </p>
+          <p className='w-full text-2xl'>Biyografi</p>
+          <p className='w-full text-2xl box-shadow px-2 py-3'> Örnek bir biyografi</p>
+        </div>
+      </div>
+    )
+  }
 
   // Profil kısmında gösterilen blogların bileşeni 
   const BlogTemplate = () => {
@@ -46,28 +79,7 @@ function Profile() {
   return (
     <div className='pt-13'>
       {/* Kullanıcının basit düzeyde profil bilgilerinin görüleceği kısım */}
-      <div className='flex w-full'>
-        <div className='w-3/12'>
-          <img src={ProfilePhoto} alt='profile' className='w-full'/>
-        </div>
-        <div className='w-9/12 p-10'>
-          <table className='w-full text-2xl'>
-            <tbody>
-              <tr>
-                <td className='w-1/2'>ad </td>
-                <td className='w-1/2'>soyad</td>
-              </tr>
-              <tr>
-                <td className='w-1/2'>mail</td>
-                <td className='w-1/2'>telefon</td>
-              </tr>
-              <tr>
-                <td colSpan={2}>description</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <ProfileTemplate/>
       {/* KUllanıcının yazdığı blogların görüneceği kısım */}
       <div className='w-full flex flex-wrap justify-around p-6'>
         <BlogTemplate/>

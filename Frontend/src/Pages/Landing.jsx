@@ -120,7 +120,6 @@ function Landing() {
   return (
     <div className='relative w-full'>
         <HeroSection/>
-        <Carousel/>
     </div>
   )
 }

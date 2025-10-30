@@ -1,12 +1,24 @@
-import React, { useState } from 'react'
-import logo from '../assets/react.svg'
+import React, { useState,useContext, useEffect} from 'react'
+import logo from '../assets/Blog_logo.png'
 import { Search , X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../Context/UserContext';
 
 
 function Header() {
   const [filter,setFilter] = useState("");// Arama çubuğu ile yapılacak filtreleme için state
   const navigate = useNavigate()
+
+  // Context API dan çekilen veriler
+  const {islogged,profile} = useContext(UserContext)
+
+  // Kontrol fonksiyonu
+  useEffect(()=>{
+    if(islogged){
+      console.log(islogged)
+      console.log(profile)
+    }
+  },[islogged])
 
   // Header kısmındaki link bileşenleri
   const Link = ({text,url})=>{
@@ -27,14 +39,14 @@ function Header() {
 
   return (
     <div className='z-90 fixed w-full h-13 bg-green-600 flex items-center justify-between px-10'>
-        <div>
-          <img src={logo} alt='logo'/>
+        <div className='h-10/12'>
+          <img src={logo} alt='logo' className='h-full'/>
         </div>
         <div className='flex justify-between w-9/12' >
           <Link text={"Anasayfa"} url={"/"}/>
           <Link text={"Keşfet"} url={"/explore"}/>
           <Link text={"Hakkında"} url={"/about"}/>
-          <Link text={"Giriş Yap/Kaydol"} url={"/signup"}/>
+          <Link text={islogged ? profile.name:'Giriş Yap/Kaydol'} url={islogged ? `profile`:'signup'}/>
         </div>
         <div className='relative'>
           <Search className='absolute h-full text-gray-500'/> 

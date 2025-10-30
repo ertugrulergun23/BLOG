@@ -41,6 +41,15 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "RestAPI.apps.RestapiConfig",
     "rest_framework",
+    "rest_framework.authtoken",
+    "dj_rest_auth",
+    "allauth",
+    "allauth.account",
+    "dj_rest_auth.registration",
+    "allauth.socialaccount",
+    "django.contrib.sites",
+    "django_extensions",
+    
 ]
 
 MIDDLEWARE = [
@@ -52,6 +61,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "Backend.urls"
@@ -133,3 +143,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT = os.path.join(BASE_DIR , 'media')
 
 MEDIA_URL = '/media/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES' : [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
+
+SITE_ID = 1
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_REGISTIRATION = (False)
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173',
+]
+
+ACCOUNT_PASSWORD_MIN_LENGTH = 4
