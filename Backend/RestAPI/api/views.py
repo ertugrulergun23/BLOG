@@ -1,6 +1,7 @@
 from ..models import Blog,Profile,Comment
 from .serializer import BlogSerializer,ProfileSerializer,CommentSerializer
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 class BlogList(generics.ListCreateAPIView):
     queryset = Blog.objects.all()
@@ -25,3 +26,12 @@ class CommentList(generics.ListCreateAPIView):
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serialzier_class = CommentSerializer
+
+class MyProfileView(generics.RetrieveAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    # Gelen isteğin sahibi olan kullanıcıyı (request.user) bulur
+    # ve o kullanıcının profilini döndürür.
+    def get_object(self):
+        return self.request.user.profil

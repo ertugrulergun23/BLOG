@@ -4,13 +4,12 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class BlogSerializer(serializers.ModelSerializer):
-    user = serializers.StringRelatedField(read_only=True)
+    author = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Blog
         fields = '__all__'
 
 class ProfileSerializer(serializers.ModelSerializer):
-    author = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Profile
         fields = '__all__'
