@@ -2,30 +2,26 @@ from ..models import Blog,Profile,Comment
 from .serializer import BlogSerializer,ProfileSerializer,CommentSerializer
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import viewsets
 
-class BlogList(generics.ListCreateAPIView):
+
+class BlogViewSet(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
 
-class BlogDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Blog.objects.all()
-    serializer_class = BlogSerializer
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user.profil)
 
-class ProfileList(generics.ListCreateAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
-
-class ProfileDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
-
-class CommentList(generics.ListCreateAPIView):
+class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
-class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Comment.objects.all()
-    serialzier_class = CommentSerializer
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user.profil)
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
 
 class MyProfileView(generics.RetrieveAPIView):
     serializer_class = ProfileSerializer
@@ -35,3 +31,20 @@ class MyProfileView(generics.RetrieveAPIView):
     # ve o kullanıcının profilini döndürür.
     def get_object(self):
         return self.request.user.profil
+    
+
+class ProfileBlogs(generics.ListAPIView):
+    serializer_class = BlogSerializer
+
+    def get_queryset(self):
+        queryset = self.request.user.profil
+        blogs = queryset.blogs.all()
+        return blogs
+    
+class BlogsComment(generics.ListAPIView):
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        blog_pk = self.kwargs['blog_pk']
+        queryset=Comment.objects.filter(blog_id=blog_pk)
+        return queryset

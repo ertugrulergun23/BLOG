@@ -2,11 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.utils.text import slugify
-
-'''
-    Profiller , bloglar ve yorumların modelleri tamamlandı 
-'''
-
+from django.core.exceptions import ValidationError
 
 
 
@@ -20,7 +16,7 @@ class Profile(models.Model):
     birth_date = models.DateField(blank=True , null=True)
 
     def __str__(self):
-        return f"{self.name}-{self.surname}"
+        return f"{self.user.username}"
     
     class Meta:
         verbose_name = 'Profil'
@@ -34,12 +30,12 @@ class Blog(models.Model):
         ('archived' , 'Arşivledni')
     ]
     id = models.AutoField(primary_key=True)
-    tittle = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=200 , unique=True,null=True)
+    tittle = models.CharField(max_length=100,blank=True)
+    slug = models.SlugField(max_length=200 , unique=True,null=True,blank=True)
     content = models.TextField()
-    image = models.ImageField(upload_to='images/' , null=True)
-    point = models.FloatField(null=True)
-    published_at = models.DateField(null=True)
+    image = models.ImageField(upload_to='images/' , null=True,blank=True)
+    point = models.FloatField(null=True,blank=True)
+    published_at = models.DateField(null=True,blank=True)
     author = models.ForeignKey(
         Profile ,
         on_delete = models.CASCADE ,
@@ -72,7 +68,7 @@ class Blog(models.Model):
         super().save(*args,**kwargs)
     
     def __str__(self):
-        return self.tittle
+        return f"{self.tittle}"
 
     class Meta:
         verbose_name = 'Blog Yazısı'
@@ -93,8 +89,13 @@ class Comment(models.Model):
         related_name='comments',
         verbose_name='Yazar'
     )
-    content = models.TextField(verbose_name='Yorum İçeriği')
+    content = models.TextField(verbose_name='Yorum İçeriği',blank=True,null=True)
     point = models.IntegerField(blank=True , null=True)
+    avatar = models.ImageField(upload_to="commentavatars/",blank=True,null=True)
+
+    def save(self,*args,**kwargs):
+        self.avatar = self.author.avatar
+        return super().save(*args,**kwargs)
 
     def __str__(self):
         return f"{self.blog.tittle}-{self.author.name}"

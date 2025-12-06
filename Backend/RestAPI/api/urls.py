@@ -1,12 +1,17 @@
-from django.urls import path
-from .views import BlogList,ProfileList,CommentList,BlogDetail,ProfileDetail,CommentDetail,MyProfileView
+from django.urls import path,include
+from .views import MyProfileView,BlogViewSet,CommentViewSet,ProfileViewSet,ProfileBlogs,BlogsComment
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+
+router.register(r'blogs',BlogViewSet,basename='blogs')
+router.register(r'comments',CommentViewSet,basename='comments')
+router.register(r'profiles',ProfileViewSet,basename='profiles')
+
 
 urlpatterns = [
-    path("blogs/",BlogList.as_view(),name="Blog List"),
-    path("profiles/",ProfileList.as_view(),name="Profile List"),
-    path("comments/",CommentList.as_view(),name="Comment List"),
-    path("blogs/<int:pk>",BlogDetail.as_view(),name="Blog Detail"),
-    path("profiles/<int:pk>",ProfileDetail.as_view(),name="Profile Detail"),
-    path("comments/<int:pk>",CommentDetail.as_view(),name="Comment Detail"),
-    path("profiles/me/",MyProfileView.as_view(),name="My Profile")
+    path("profiles/me/",MyProfileView.as_view(),name="My Profile"),
+    path("profiles/me/blogs/",ProfileBlogs.as_view(),name="My blogs"),
+    path("blogs/<int:blog_pk>/comments/",BlogsComment.as_view(),name="Blog Comments"),
+    path("",include(router.urls)),
 ]
