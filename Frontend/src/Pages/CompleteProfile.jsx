@@ -9,6 +9,11 @@ function CompleteProfile() {
     const [date,setDate] = useState();//Doğum gününü tutacak state
     const [avatar,setAvatar] = useState();//Profil fotoğrafını tutacak state
 
+    const completeProfile = async (e) => {
+        
+    }
+
+
   return (
     <div className='min-h-screen HeroBackgroundColor flex flex-col items-center'>
         <div className='w-full text-center text-3xl p-5'>Bu Sayfada Profilini Tamamlayarak Blog Macerana Başlayabilirsin</div>
@@ -33,7 +38,7 @@ function CompleteProfile() {
             <textarea value={bio} onChange={(e)=>setSurname(e.target.value)} className='box-shadow w-9/12 text-2xl p-2 focus:outline-0'></textarea>
         </div>
         <div className='h-1 pt-5'>
-            <button className='bg-green-500 text-white p-4 rounded text-xl cursor-pointer hover:bg-green-400'>TAMAMLA</button>
+            <button className='bg-green-500 text-white p-4 rounded text-xl cursor-pointer hover:bg-green-400' onClick={completeProfile}>TAMAMLA</button>
         </div>
     </div>
   )

@@ -2,23 +2,13 @@ import React, { useState,useContext, useEffect} from 'react'
 import logo from '../assets/Blog_logo.png'
 import { Search , X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../Context/UserContext';
 
 
 function Header() {
   const [filter,setFilter] = useState("");// Arama çubuğu ile yapılacak filtreleme için state
   const navigate = useNavigate()
 
-  // Context API dan çekilen veriler
-  const {islogged,profile} = useContext(UserContext)
-
-  // Kontrol fonksiyonu
-  useEffect(()=>{
-    if(islogged){
-      console.log(islogged)
-      console.log(profile)
-    }
-  },[islogged])
+  
 
   // Header kısmındaki link bileşenleri
   const Link = ({text,url})=>{
@@ -46,7 +36,7 @@ function Header() {
           <Link text={"Anasayfa"} url={"/"}/>
           <Link text={"Keşfet"} url={"/explore"}/>
           <Link text={"Hakkında"} url={"/about"}/>
-          <Link text={islogged ? profile.name:'Giriş Yap/Kaydol'} url={islogged ? `profile`:'signup'}/>
+          <Link text={localStorage.getItem('Username') ? localStorage.getItem('Username'):'Giriş Yap/Kaydol'} url={localStorage.getItem('Username') ? '/profile':'signup'}/>
         </div>
         <div className='relative'>
           <Search className='absolute h-full text-gray-500'/> 

@@ -1,15 +1,18 @@
 import { Eye , EyeOff } from 'lucide-react'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 
 function Login() {
-    const [login , setLogin] = useState(false)
-    const [rusername,Setrusername] = useState("")
-    const [rpassword1,Setrpassword1] = useState("")
-    const [rpassword2,Setrpassword2] = useState("")
-    const [remail,Setremail] = useState("")
-    const [lusername,Setlusername] = useState("")
-    const [lpassword,Setlpassword] = useState("")
+    const [login , setLogin] = useState(false) // Giriş mi yapılacak kayıt mı olunacağını belirten state
+    const [rusername,Setrusername] = useState("") // Kayıt kullanıcı ismi
+    const [rpassword1,Setrpassword1] = useState("") // Kayıt 1.şifre
+    const [rpassword2,Setrpassword2] = useState("") // Kayıt 2.şifre
+    const [remail,Setremail] = useState("") // Kayıt email
+    const [lusername,Setlusername] = useState("") // Giriş kullanıcı ismi
+    const [lpassword,Setlpassword] = useState("") // Giriş şifre
+
+    const navigate = useNavigate() // Sayfa yönlendirmesi yapmamızı sağlayacak nesne 
 
     const changeLogin = () => {
         setLogin(!login)
@@ -48,6 +51,7 @@ function Login() {
         if(response.ok){
             const data = await response.json
             localStorage.setItem("AuthToken",data.key)
+            navigate('/complete-profile')
         }else{
             alert("Hata oluştu")
         }
