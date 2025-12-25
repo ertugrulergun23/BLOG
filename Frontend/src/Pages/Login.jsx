@@ -1,37 +1,43 @@
 import { Eye , EyeOff } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ProgressSpinner } from 'primereact/progressspinner'
 
 
+
+// Kullanıcıdan şifre almak için bileşen 
+const PasswordTemplate = ({id,state,Setstate}) => {
+    const [visibility,setVisibility] = useState(false)
+    return (
+        <div className='w-11/12 flex mb-5'>
+            <input type={`${visibility ? 'text' : 'password'}`} id={id} className='w-11/12 rounded-bl-lg rounded-tl-lg focus:outline-0 p-1 text-lg border-l border-t border-b border-black' value={state} onChange={(e)=>Setstate(e.target.value)}/>
+            <button className='w-1/12 flex items-center justify-center border-r border-t border-b border-black rounded-tr-lg rounded-br-lg' onClick={()=>{setVisibility(!visibility)}}>
+                {visibility ? <Eye/> : <EyeOff/>}
+            </button>
+        </div>
+    )
+}
+
+// Ana Fonksiyon
 function Login() {
     const [login , setLogin] = useState(false) // Giriş mi yapılacak kayıt mı olunacağını belirten state
     const [rusername,Setrusername] = useState("") // Kayıt kullanıcı ismi
     const [rpassword1,Setrpassword1] = useState("") // Kayıt 1.şifre
     const [rpassword2,Setrpassword2] = useState("") // Kayıt 2.şifre
-    const [remail,Setremail] = useState("") // Kayıt email
     const [lusername,Setlusername] = useState("") // Giriş kullanıcı ismi
     const [lpassword,Setlpassword] = useState("") // Giriş şifre
+    const [loading,SetLoading] = useState(true) // Asenkron bekletme state'i
 
     const navigate = useNavigate() // Sayfa yönlendirmesi yapmamızı sağlayacak nesne 
 
+    // Login-Register değiştirme fonksiyonu
     const changeLogin = () => {
         setLogin(!login)
     }
 
-    // Kullanıcıdan şifre almak için bileşen 
-    const PasswordTemplate = ({id,state,Setstate}) => {
-        const [visibility,setVisibility] = useState(false)
-        return (
-            <div className='w-11/12 flex mb-5'>
-                <input type={`${visibility ? 'text' : 'password'}`} id={id} className='w-11/12 rounded-bl-lg rounded-tl-lg focus:outline-0 p-1 text-lg border-l border-t border-b border-black' value={state} onChange={(e)=>Setstate(e.target.value)}/>
-                <button className='w-1/12 flex items-center justify-center border-r border-t border-b border-black rounded-tr-lg rounded-br-lg' onClick={()=>{setVisibility(!visibility)}}>
-                    {visibility ? <Eye/> : <EyeOff/>}
-                </button>
-            </div>
-        )
-    }
-
+    // Kayıt olunma fonksiyonu
     const Registiration = async ()=>{
+        await SetLoading(false)
         let data = {
             "username" : rusername,
             "password1" : rpassword1,
@@ -49,15 +55,19 @@ function Login() {
             }
         )
         if(response.ok){
-            const data = await response.json
+            const data = await response.json()
             localStorage.setItem("AuthToken",data.key)
             navigate('/complete-profile')
         }else{
-            alert("Hata oluştu")
+            alert("Kayıt oluşurulurken bir hata oluştu")
+            await SetLoading(true)
         }
     }
 
+    // Login olma fonksiyonu
     const Login = async ()=>{
+        await SetLoading(false)
+
         let data = {
             "username" : lusername,
             "password" : lpassword
@@ -78,8 +88,10 @@ function Login() {
         if(response.ok){
             const data = await response.json()
             localStorage.setItem('AuthToken',data.key)
+            navigate('/')
         }else{
-            alert("Hata oluştu")
+            alert("Yanlış kullanıcı ismi veya şifre !")
+            await SetLoading(true)
         }
     }
 
@@ -106,10 +118,10 @@ function Login() {
                     <div className='w-10/12 h-10/12 flex flex-col items-center justify-center bg-white'>
                         <h1 className='text-3xl my-5'>Giriş Yap</h1>
                         <label htmlFor='username' className='text-xl w-11/12 mb-5'>Kullanıcı Adı</label>
-                        <input type='text' id='username' className='mb-5 rounded-lg p-1 text-lg w-11/12 focus:outline-0 border-2 border-black ' value={lusername} onChange={(e)=>{Setlusername(e.target.value)}}/>
+                        <input type='text' id='username' className='mb-5 rounded-lg p-1 text-lg w-11/12 focus:outline-0 border border-black ' value={lusername} onChange={(e)=>{Setlusername(e.target.value)}}/>
                         <label htmlFor='password' className='mb-5 text-xl w-11/12'>Şifre</label>
-                        <input type='password' id='password' className=' mb-7 rounded-lg p-1 text-lg w-11/12 focus:outline-0 border-2 border-black' value={lpassword} onChange={(e)=>{Setlpassword(e.target.value)}}/>
-                        <button className='w-9/12 border border-black p-1 rounded-xl text-xl bg-green-500 text-white transition-all duration-100  hover:bg-green-600' onClick={Login}>Giriş Yap</button>
+                        <PasswordTemplate id={'password'} state={lpassword} Setstate={Setlpassword}/>
+                        <button className='w-9/12 border border-black p-1 rounded-xl text-xl bg-green-500 text-white transition-all duration-100  hover:bg-green-600 cursor-pointer' onClick={Login}>{loading ? 'Giriş Yap':<ProgressSpinner style={{width: '30px', height: '20px'}} strokeWidth="8"/>}</button>
                     </div>
                 </div>
                 <div className="w-1/2 flex items-center justify-center">
@@ -121,9 +133,7 @@ function Login() {
                         <PasswordTemplate id={'spassword1'} state={rpassword1} Setstate={Setrpassword1}/>
                         <label className='text-xl w-11/12' htmlFor="spassword2">Şifre Tekrar</label>
                         <PasswordTemplate id={'spassword2'} state={rpassword2} Setstate={Setrpassword2}/>
-                        <label className='text-xl w-11/12' htmlFor="email">E-mail</label>
-                        <input type="text" id='email' className='border border-black w-11/12 rounded-lg p-1 text-lg focus:outline-0 mb-5' value={remail} onChange={(e)=>Setremail(e.target.value)}/>
-                        <button className='w-9/12 p-1 text-xl transition-all duration-100 border border-black bg-green-400 text-white cursor-pointer rounded-xl hover:bg-green-500' onClick={Registiration}>Kayıt Ol</button>
+                        <button className='w-9/12 p-1 text-xl transition-all duration-100 border border-black bg-green-400 text-white cursor-pointer rounded-xl hover:bg-green-500' onClick={Registiration}>{loading ? 'Kayıt Ol':<ProgressSpinner style={{width: '30px', height: '20px'}} strokeWidth="8"/>}</button>
                     </div>
                 </div>
             </div>

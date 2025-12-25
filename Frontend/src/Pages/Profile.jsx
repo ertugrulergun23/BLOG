@@ -88,6 +88,11 @@ function Profile() {
   }
 
 
+  // Profilden çıkış yapacak fonksiyon
+  const quitProfile = async ( )=>{
+    localStorage.clear()
+    navigate('/')
+  }
 
 
 
@@ -95,13 +100,19 @@ function Profile() {
 
   return (
     <div className='pt-13'>
-      <div  className='w-full h-10 px-10 py-6 flex items-center justify-end'>
+      <div  className='w-full h-10 px-10 py-6 flex items-center justify-between'>
         <button 
           className='rounded px-4 py-2 box-shadow cursor-pointer flex bg-green-600 text-white hover:scale-110 transition-all duration-200'
           onClick={(e)=>navigate('/addblog')}
         >
           <Plus/>
           Blog Ekle
+        </button>
+        <button 
+          className='px-4 py-2 rounded box-shadow bg-red-600 text-white font-bold cursor-pointer hover:scale-110 transition-all duration-200'
+          onClick={quitProfile}
+        >
+          Çıkış Yap
         </button>
 
       </div>

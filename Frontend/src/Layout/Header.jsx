@@ -2,12 +2,20 @@ import React, { useState,useContext, useEffect} from 'react'
 import logo from '../assets/Blog_logo.png'
 import { Search , X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 
 function Header() {
   const [filter,setFilter] = useState("");// Arama çubuğu ile yapılacak filtreleme için state
+  const [AuthToken,SetAuthToken] = useState(localStorage.getItem('AuthToken'))
+  const [Username,SetUsername] = useState(localStorage.getItem("Username"))
   const navigate = useNavigate()
 
+
+  useEffect(()=>{
+    SetAuthToken(localStorage.getItem('AuthToken'))
+    SetUsername(localStorage.getItem('Username'))
+  },[localStorage.getItem('AuthToken'),localStorage.getItem('Username')])
   
 
   // Header kısmındaki link bileşenleri
@@ -36,7 +44,7 @@ function Header() {
           <Link text={"Anasayfa"} url={"/"}/>
           <Link text={"Keşfet"} url={"/explore"}/>
           <Link text={"Hakkında"} url={"/about"}/>
-          <Link text={localStorage.getItem('Username') ? localStorage.getItem('Username'):'Giriş Yap/Kaydol'} url={localStorage.getItem('Username') ? '/profile':'signup'}/>
+          <Link text={!AuthToken ? 'Giriş Yap/Kaydol' : Username ? Username:<ProgressSpinner style={{width: '30px', height: '23px'}} strokeWidth="8" /> } url={localStorage.getItem('Username') ? '/profile':'signup'}/>
         </div>
         <div className='relative'>
           <Search className='absolute h-full text-gray-500'/> 
