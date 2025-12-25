@@ -104,3 +104,24 @@ export const GetComment = async (id)=>{
   const comments = await response.json()
   return comments
 }
+
+// Kullanıcı profil tamamlama sayfasındaki api isteği
+export const CompleteProfileApi = async (data)=>{
+  try{
+      const response = await fetch('http://localhost:8000/api/profiles/',{
+          method:'POST',
+          headers:{
+              'Authorization' : `Token ${localStorage.getItem('AuthToken')}`
+          },
+          body:data
+      })
+      if(response.ok){
+        console.log("İstek başarılı")
+      }else{
+          const errorData = await response.json()
+          console.error('Hata oluştu : ',errorData)
+      }
+  }catch(error){
+      console.error('istek hatası :',error)
+  }
+}
